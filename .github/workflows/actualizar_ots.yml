@@ -1,0 +1,44 @@
+name: Actualizar OTs Fracttal
+
+on:
+  schedule:
+    # Hora Perú (UTC-5): 7:00 AM = 12:00 UTC | 7:00 PM = 00:00 UTC
+    - cron: '0 12 * * *'   # 7:00 AM hora Perú
+    - cron: '0 0 * * *'    # 7:00 PM hora Perú
+  workflow_dispatch:        # Permite ejecutar manualmente desde GitHub
+
+jobs:
+  descargar-ots:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write       # Necesario para hacer commit del CSV
+
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependencias
+        run: |
+          pip install playwright requests
+          python -m playwright install chromium
+          python -m playwright install-deps chromium
+
+      - name: Ejecutar script de descarga
+        env:
+          FRACTTAL_USUARIO: ${{ secrets.FRACTTAL_USUARIO }}
+          FRACTTAL_PASSWORD: ${{ secrets.FRACTTAL_PASSWORD }}
+        run: python fracttal_github.py
+
+      - name: Guardar CSV en el repositorio
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add OTs_Fracttal.csv
+          git diff --staged --quiet || git commit -m "Actualizar OTs - $(date +'%d/%m/%Y %H:%M') UTC"
+          git push
