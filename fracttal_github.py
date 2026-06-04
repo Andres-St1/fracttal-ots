@@ -46,7 +46,7 @@ COLUMNAS = [
     ("description",                     "Descripción OT"),
     ("task_status",                     "Estado"),
     ("types_description",               "Tipo de OT"),
-    ("tasks_log_types_description",     "Tipo de Tarea"),
+    ("tasks_log_task_type_main",        "Tipo de Tarea"),
     ("priorities_description",          "Prioridad"),
     ("code",                            "Código Activo"),
     ("items_log_description",           "Activo"),
