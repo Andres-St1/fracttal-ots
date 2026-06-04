@@ -37,7 +37,7 @@ ARCHIVO_FINAL  = "OTs_Fracttal.csv"
 
 COLUMNAS = [
     ("wo_folio",                        "ID Orden de Trabajo"),
-    ("cancellation_reason",             "Motivo de Cancelación"),
+    ("work_orders_status_custom_description",             "Motivo de Cancelación"),
     ("creation_date",                   "Fecha de Creación"),
     ("initial_date",                    "Fecha Inicio"),
     ("final_date",                      "Fecha Fin"),
