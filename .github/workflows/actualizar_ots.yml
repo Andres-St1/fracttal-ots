@@ -1,40 +1,38 @@
 name: Actualizar OTs Fracttal
-
 on:
   schedule:
-    # Hora Perú (UTC-5): 7:00 AM = 12:00 UTC | 7:00 PM = 00:00 UTC
-    - cron: '0 12 * * *'   # 7:00 AM hora Perú
-    - cron: '0 0 * * *'    # 7:00 PM hora Perú
-  workflow_dispatch:        # Permite ejecutar manualmente desde GitHub
-
+    # Hora Perú UTC-5 → sumar 5h para UTC, ejecutar 10 min antes
+    - cron: '50 12 * * *'   # 7:50 AM Perú  (antes de 8:00 AM)
+    - cron: '50 13 * * *'   # 8:50 AM Perú  (antes de 9:00 AM)
+    - cron: '50 14 * * *'   # 9:50 AM Perú  (antes de 10:00 AM)
+    - cron: '50 15 * * *'   # 10:50 AM Perú (antes de 11:00 AM)
+    - cron: '50 16 * * *'   # 11:50 AM Perú (antes de 12:00 PM)
+    - cron: '50 18 * * *'   # 1:50 PM Perú  (antes de 2:00 PM)
+    - cron: '50 20 * * *'   # 3:50 PM Perú  (antes de 4:00 PM)
+    - cron: '50 22 * * *'   # 5:50 PM Perú  (antes de 6:00 PM)
+  workflow_dispatch:
 jobs:
   descargar-ots:
     runs-on: ubuntu-latest
-
     permissions:
-      contents: write       # Necesario para hacer commit del CSV
-
+      contents: write
     steps:
       - name: Descargar repositorio
         uses: actions/checkout@v4.2.2
-
       - name: Configurar Python 3.11
         uses: actions/setup-python@v5.6.0
         with:
           python-version: '3.11'
-
       - name: Instalar dependencias
         run: |
           pip install playwright requests
           python -m playwright install chromium
           python -m playwright install-deps chromium
-
       - name: Ejecutar script de descarga
         env:
           FRACTTAL_USUARIO: ${{ secrets.FRACTTAL_USUARIO }}
           FRACTTAL_PASSWORD: ${{ secrets.FRACTTAL_PASSWORD }}
         run: python fracttal_github.py
-
       - name: Guardar CSV en el repositorio
         run: |
           git config --global user.name "GitHub Actions"
