@@ -69,6 +69,7 @@ COLUMNAS = [
     ("note",                            "Nota"),
     ("task_note",                       "Nota Tarea"),
     ("labels",                          "Etiquetas"),
+    ("id_request",                      "Número de Solicitud"),
 ]
 # ─────────────────────────────────────────────
 
