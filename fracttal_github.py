@@ -176,7 +176,11 @@ def obtener_ots_rango(token, fecha_desde, fecha_hasta):
         raise Exception("Token inválido o expirado.")
 
     data = r.json()
-
+    
+    # DEBUG TEMPORAL — borrar después
+    print(f"[DEBUG] tipo data: {type(data)}")
+    print(f"[DEBUG] respuesta: {str(data)[:500]}")
+    
     for item in data:
         if not isinstance(item, dict):   # ← línea nueva
             continue                      # ← línea nueva
