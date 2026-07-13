@@ -28,7 +28,7 @@ PASSWORD  = os.environ["FRACTTAL_PASSWORD"]
 URL_LOGIN      = "https://app.fracttal.com/signin"
 URL_API        = "https://app.fracttal.com/rpc/proxy"
 
-FECHA_INICIO   = "2023-06-25"
+FECHA_INICIO   = "2024-06-25"
 FECHA_FIN      = datetime.today().strftime("%Y-%m-%d")
 DIAS_POR_LOTE  = 60
 
