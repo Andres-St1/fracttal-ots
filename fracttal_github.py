@@ -177,7 +177,7 @@ def obtener_ots_rango(token, fecha_desde, fecha_hasta):
 
     data = r.json()
 
-     for item in data:
+    for item in data:
         if not isinstance(item, dict):   # ← línea nueva
             continue                      # ← línea nueva
         result = item.get("result", {})
