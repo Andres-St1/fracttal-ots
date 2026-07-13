@@ -166,8 +166,11 @@ def obtener_ots_rango(token, fecha_desde, fecha_hasta):
     }]
 
     headers = {
-        "Content-Type": "application/json",
-        "Authorization": f"Bearer {token}"
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {token}",
+    "Origin": "https://app.fracttal.com",
+    "Referer": "https://app.fracttal.com/",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
     }
 
     r = requests.post(URL_API, json=payload, headers=headers, timeout=30)
@@ -177,22 +180,26 @@ def obtener_ots_rango(token, fecha_desde, fecha_hasta):
 
     data = r.json()
     
-    # DEBUG TEMPORAL — borrar después
-    print(f"[DEBUG] tipo data: {type(data)}")
-    print(f"[DEBUG] respuesta: {str(data)[:500]}")
+    if isinstance(data, dict):
+        if not data.get("success", True) == False:
+            registros = data.get("data") or []
+            total = data.get("total") or len(registros)
+            return registros, total
+        # Si success=False, retornar vacío
+        return [], 0
     
+    # Formato JSON-RPC antiguo (lista)
     for item in data:
-        if not isinstance(item, dict):   # ← línea nueva
-            continue                      # ← línea nueva
+        if not isinstance(item, dict):
+            continue
         result = item.get("result", {})
         if isinstance(result, dict):
             registros = (result.get("data") or result.get("rows") or
                         result.get("results") or result.get("items") or [])
-            total     = result.get("total") or result.get("count") or len(registros)
+            total = result.get("total") or result.get("count") or len(registros)
             return registros, total
         elif isinstance(result, list):
             return result, len(result)
-
     return [], 0
 
 
